@@ -1,0 +1,385 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0FD971071BC4895F7355C1DA /* LogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D587153AD03AB6273097F731 /* LogView.swift */; };
+		24C7D8EB858095C1E0118935 /* ServerListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D1242BB7A168EF4A44D503 /* ServerListView.swift */; };
+		26F9F596787A9EBF24AE3CD7 /* MenuBarContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5E912FA9B4317E99FF1FA3 /* MenuBarContent.swift */; };
+		41809678C7D6EE3D951923A3 /* LogBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5FA587A7C80C93F88268173 /* LogBuffer.swift */; };
+		50E2E375C67E307A2682C27A /* RegisterServerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72E83148E0E2A9D725226CEA /* RegisterServerSheet.swift */; };
+		6F47AA565266E0B31F9999EB /* HangarApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C18B8D45A99B2B02CFA15909 /* HangarApp.swift */; };
+		730C1208E1221C15014879CC /* MainWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783F82631910F3AE6191B6B9 /* MainWindow.swift */; };
+		87544868DD28C6603DC683A0 /* ServerStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF11CDC1F19DBA46DEE89C5 /* ServerStore.swift */; };
+		B169275D0D593ADE269877E4 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEF035BB4A3BABFDC2FE677 /* Server.swift */; };
+		B5AB4CF4845701080AC0E2A3 /* ProcessManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D9AD7E1E6B495675BCCE898 /* ProcessManager.swift */; };
+		B65CE6B9CA4968CB40E572CB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6A842885D79290A8C65C068B /* Assets.xcassets */; };
+		BE2D281B38760CA2950E506F /* ServerDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A5D43A8C08B3925BDBB69A88 /* ServerDetailView.swift */; };
+		C780C77C9E9480E175E72219 /* ServerRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A854321E1E7DADEE8FB7937 /* ServerRunner.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		45D1242BB7A168EF4A44D503 /* ServerListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerListView.swift; sourceTree = "<group>"; };
+		6A842885D79290A8C65C068B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		6D9AD7E1E6B495675BCCE898 /* ProcessManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessManager.swift; sourceTree = "<group>"; };
+		72E83148E0E2A9D725226CEA /* RegisterServerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterServerSheet.swift; sourceTree = "<group>"; };
+		783F82631910F3AE6191B6B9 /* MainWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindow.swift; sourceTree = "<group>"; };
+		7A854321E1E7DADEE8FB7937 /* ServerRunner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerRunner.swift; sourceTree = "<group>"; };
+		9749758A26D1CED1BCAD67C2 /* Hangar.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Hangar.entitlements; sourceTree = "<group>"; };
+		A5D43A8C08B3925BDBB69A88 /* ServerDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerDetailView.swift; sourceTree = "<group>"; };
+		A5DC3005888DBC9B44B5697E /* Hangar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hangar.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AD5E912FA9B4317E99FF1FA3 /* MenuBarContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarContent.swift; sourceTree = "<group>"; };
+		BFEF035BB4A3BABFDC2FE677 /* Server.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
+		C18B8D45A99B2B02CFA15909 /* HangarApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HangarApp.swift; sourceTree = "<group>"; };
+		D587153AD03AB6273097F731 /* LogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogView.swift; sourceTree = "<group>"; };
+		D5FA587A7C80C93F88268173 /* LogBuffer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogBuffer.swift; sourceTree = "<group>"; };
+		EFF64804612E015B5503BA68 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		FAF11CDC1F19DBA46DEE89C5 /* ServerStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerStore.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		0BC73526F40306377CFC786F = {
+			isa = PBXGroup;
+			children = (
+				5F4C770671BBD80C6891DAD5 /* Hangar */,
+				3B6D4E977F74F9D651E03C8E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		3B6D4E977F74F9D651E03C8E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A5DC3005888DBC9B44B5697E /* Hangar.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		5F4C770671BBD80C6891DAD5 /* Hangar */ = {
+			isa = PBXGroup;
+			children = (
+				6A842885D79290A8C65C068B /* Assets.xcassets */,
+				9749758A26D1CED1BCAD67C2 /* Hangar.entitlements */,
+				C18B8D45A99B2B02CFA15909 /* HangarApp.swift */,
+				EFF64804612E015B5503BA68 /* Info.plist */,
+				8EBD24E1D9357AAC27A959BB /* Models */,
+				BA8BE4611C850CD5D2A8E57E /* Runtime */,
+				C518395A67EF784F4F1BF50B /* Views */,
+			);
+			path = Hangar;
+			sourceTree = "<group>";
+		};
+		8EBD24E1D9357AAC27A959BB /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				BFEF035BB4A3BABFDC2FE677 /* Server.swift */,
+				FAF11CDC1F19DBA46DEE89C5 /* ServerStore.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		BA8BE4611C850CD5D2A8E57E /* Runtime */ = {
+			isa = PBXGroup;
+			children = (
+				D5FA587A7C80C93F88268173 /* LogBuffer.swift */,
+				6D9AD7E1E6B495675BCCE898 /* ProcessManager.swift */,
+				7A854321E1E7DADEE8FB7937 /* ServerRunner.swift */,
+			);
+			path = Runtime;
+			sourceTree = "<group>";
+		};
+		C518395A67EF784F4F1BF50B /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D587153AD03AB6273097F731 /* LogView.swift */,
+				783F82631910F3AE6191B6B9 /* MainWindow.swift */,
+				AD5E912FA9B4317E99FF1FA3 /* MenuBarContent.swift */,
+				72E83148E0E2A9D725226CEA /* RegisterServerSheet.swift */,
+				A5D43A8C08B3925BDBB69A88 /* ServerDetailView.swift */,
+				45D1242BB7A168EF4A44D503 /* ServerListView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		725B2FD093DF6AA7E01F425F /* Hangar */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0424338E434024227B612FE9 /* Build configuration list for PBXNativeTarget "Hangar" */;
+			buildPhases = (
+				1C977E99E350038BD755BEFB /* Sources */,
+				863BCBE46190FB6B80A62558 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Hangar;
+			packageProductDependencies = (
+			);
+			productName = Hangar;
+			productReference = A5DC3005888DBC9B44B5697E /* Hangar.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		070A985CABCFA335961E390C /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					725B2FD093DF6AA7E01F425F = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 6D0CAAFE9DD01E736606C398 /* Build configuration list for PBXProject "Hangar" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 0BC73526F40306377CFC786F;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 3B6D4E977F74F9D651E03C8E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				725B2FD093DF6AA7E01F425F /* Hangar */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		863BCBE46190FB6B80A62558 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B65CE6B9CA4968CB40E572CB /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1C977E99E350038BD755BEFB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6F47AA565266E0B31F9999EB /* HangarApp.swift in Sources */,
+				41809678C7D6EE3D951923A3 /* LogBuffer.swift in Sources */,
+				0FD971071BC4895F7355C1DA /* LogView.swift in Sources */,
+				730C1208E1221C15014879CC /* MainWindow.swift in Sources */,
+				26F9F596787A9EBF24AE3CD7 /* MenuBarContent.swift in Sources */,
+				B5AB4CF4845701080AC0E2A3 /* ProcessManager.swift in Sources */,
+				50E2E375C67E307A2682C27A /* RegisterServerSheet.swift in Sources */,
+				B169275D0D593ADE269877E4 /* Server.swift in Sources */,
+				BE2D281B38760CA2950E506F /* ServerDetailView.swift in Sources */,
+				24C7D8EB858095C1E0118935 /* ServerListView.swift in Sources */,
+				C780C77C9E9480E175E72219 /* ServerRunner.swift in Sources */,
+				87544868DD28C6603DC683A0 /* ServerStore.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		885E7337D8BDBF6E6DDFAAA1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		94D9BD3D281BF4B72762958E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Hangar/Hangar.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_APP_SANDBOX = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Hangar/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.h.hangar;
+				PRODUCT_NAME = Hangar;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		AD19E88F5CA89C347AF88971 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Hangar/Hangar.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_APP_SANDBOX = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Hangar/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.h.hangar;
+				PRODUCT_NAME = Hangar;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		E45A9A2C981572B5AE4C85EC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0424338E434024227B612FE9 /* Build configuration list for PBXNativeTarget "Hangar" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				94D9BD3D281BF4B72762958E /* Debug */,
+				AD19E88F5CA89C347AF88971 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		6D0CAAFE9DD01E736606C398 /* Build configuration list for PBXProject "Hangar" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				885E7337D8BDBF6E6DDFAAA1 /* Debug */,
+				E45A9A2C981572B5AE4C85EC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 070A985CABCFA335961E390C /* Project object */;
+}
