@@ -8,35 +8,47 @@ struct ServerListView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            List(selection: $selection) {
-                ForEach(store.servers) { server in
-                    ServerRow(server: server)
-                        .tag(server.id)
+            HStack {
+                Text("Servers")
+                    .font(.system(size: 11, weight: .semibold))
+                    .tracking(0.6)
+                    .foregroundStyle(.secondary)
+                    .textCase(.uppercase)
+                Spacer()
+            }
+            .padding(.horizontal, 18)
+            .padding(.top, 14)
+            .padding(.bottom, 6)
+
+            ScrollView {
+                LazyVStack(spacing: 2) {
+                    ForEach(store.servers) { server in
+                        ServerRow(
+                            server: server,
+                            isSelected: selection == server.id
+                        )
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            selection = server.id
+                        }
+                    }
                 }
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
             }
-            .listStyle(.sidebar)
 
-            Divider()
+            Spacer(minLength: 0)
 
-            Button(action: onAdd) {
+            Button {
+                onAdd()
+            } label: {
                 Label("Add Server", systemImage: "plus")
-                    .font(.system(size: 13, weight: .medium))
+                    .font(.system(size: 12.5, weight: .medium))
                     .frame(maxWidth: .infinity)
-                    .padding(.vertical, 6)
-                    .contentShape(Rectangle())
             }
-            .buttonStyle(.plain)
-            .background(
-                RoundedRectangle(cornerRadius: 6)
-                    .fill(Color.accentColor.opacity(0.15))
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: 6)
-                    .strokeBorder(Color.accentColor.opacity(0.35), lineWidth: 0.5)
-            )
-            .foregroundStyle(Color.accentColor)
-            .padding(.horizontal, 10)
-            .padding(.vertical, 8)
+            .buttonStyle(.glassNeutral)
+            .padding(.horizontal, 12)
+            .padding(.bottom, 12)
         }
     }
 }
@@ -44,46 +56,33 @@ struct ServerListView: View {
 private struct ServerRow: View {
     @Environment(ProcessManager.self) private var manager
     let server: Server
+    let isSelected: Bool
 
     var body: some View {
         let runner = manager.runner(for: server)
-        HStack(spacing: 8) {
+        HStack(spacing: 10) {
             StatusDot(status: runner.status)
-            VStack(alignment: .leading, spacing: 2) {
-                Text(server.name.isEmpty ? "(unnamed)" : server.name)
-                    .font(.body)
-                    .lineLimit(1)
-                Text(runner.status.label)
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
-                    .lineLimit(1)
-            }
+            Text(server.name.isEmpty ? "(unnamed)" : server.name)
+                .font(.system(size: 13, weight: isSelected ? .semibold : .regular))
+                .lineLimit(1)
             Spacer(minLength: 0)
+            if let port = server.port {
+                Text(":\(port)")
+                    .font(.system(size: 11, design: .monospaced))
+                    .foregroundStyle(.tertiary)
+            }
         }
-        .padding(.vertical, 2)
-    }
-}
-
-struct StatusDot: View {
-    let status: ServerStatus
-
-    var color: Color {
-        switch status {
-        case .stopped: return .gray
-        case .starting, .stopping: return .yellow
-        case .running: return .green
-        case .crashed: return .red
+        .padding(.horizontal, 12)
+        .padding(.vertical, 7)
+        .background {
+            if isSelected {
+                RoundedRectangle(cornerRadius: 8, style: .continuous)
+                    .fill(runner.status.tint.opacity(0.18))
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 8, style: .continuous)
+                            .strokeBorder(runner.status.tint.opacity(0.35), lineWidth: 0.6)
+                    }
+            }
         }
-    }
-
-    var body: some View {
-        Circle()
-            .fill(color)
-            .frame(width: 9, height: 9)
-            .overlay(
-                Circle().stroke(color.opacity(0.4), lineWidth: 2)
-                    .scaleEffect(1.4)
-                    .opacity(status == .running ? 0.6 : 0)
-            )
     }
 }

@@ -22,6 +22,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 @main
 struct HangarApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) private var delegate
+    @AppStorage("appearance") private var appearance: AppearanceSetting = .system
 
     var body: some Scene {
         WindowGroup("Hangar", id: "main") {
@@ -29,16 +30,23 @@ struct HangarApp: App {
                 .environment(AppServices.shared.store)
                 .environment(AppServices.shared.manager)
                 .frame(minWidth: 880, minHeight: 540)
+                .preferredColorScheme(appearance.colorScheme)
         }
         .windowResizability(.contentMinSize)
         .commands {
             CommandGroup(replacing: .newItem) {}
         }
 
+        Settings {
+            SettingsView()
+                .preferredColorScheme(appearance.colorScheme)
+        }
+
         MenuBarExtra("Hangar", systemImage: "server.rack") {
             MenuBarContent()
                 .environment(AppServices.shared.store)
                 .environment(AppServices.shared.manager)
+                .preferredColorScheme(appearance.colorScheme)
         }
         .menuBarExtraStyle(.window)
     }

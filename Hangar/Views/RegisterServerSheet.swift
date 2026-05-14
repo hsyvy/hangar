@@ -33,6 +33,13 @@ struct RegisterServerSheet: View {
         }
     }
 
+    private var subtitle: String {
+        switch mode {
+        case .create: return "Add a new local server. You can edit any of these later."
+        case .edit:   return "Update the details for this server."
+        }
+    }
+
     private var canSave: Bool {
         !name.trimmingCharacters(in: .whitespaces).isEmpty &&
         !directory.trimmingCharacters(in: .whitespaces).isEmpty &&
@@ -41,27 +48,35 @@ struct RegisterServerSheet: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            Text(title)
-                .font(.title3.weight(.semibold))
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(.horizontal, 20)
-                .padding(.top, 16)
-                .padding(.bottom, 8)
-
-            Divider()
+            VStack(alignment: .leading, spacing: 4) {
+                Text(title)
+                    .font(.system(size: 18, weight: .semibold))
+                Text(subtitle)
+                    .font(.system(size: 12))
+                    .foregroundStyle(.secondary)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .padding(.horizontal, 22)
+            .padding(.top, 20)
+            .padding(.bottom, 14)
 
             ScrollView {
-                VStack(alignment: .leading, spacing: 14) {
+                VStack(alignment: .leading, spacing: 16) {
                     field("Name") {
                         TextField("My API", text: $name)
                             .textFieldStyle(.roundedBorder)
                     }
 
-                    field("Directory") {
-                        HStack {
-                            TextField("/path/to/server", text: $directory)
+                    field("Working directory") {
+                        HStack(spacing: 8) {
+                            TextField("~/code/my-service", text: $directory)
                                 .textFieldStyle(.roundedBorder)
-                            Button("Choose…") { pickDirectory() }
+                            Button {
+                                pickDirectory()
+                            } label: {
+                                Label("Choose…", systemImage: "folder")
+                            }
+                            .buttonStyle(.glassNeutral)
                         }
                     }
 
@@ -71,82 +86,97 @@ struct RegisterServerSheet: View {
                             .font(.system(.body, design: .monospaced))
                     }
 
-                    HStack(spacing: 12) {
-                        field("Port (optional)") {
+                    HStack(alignment: .top, spacing: 14) {
+                        field("Port") {
                             TextField("3000", text: $portText)
                                 .textFieldStyle(.roundedBorder)
-                                .frame(width: 100)
+                                .frame(width: 110)
                         }
-                        field("URL Path") {
+                        field("URL path") {
                             TextField("/", text: $urlPath)
                                 .textFieldStyle(.roundedBorder)
-                                .frame(width: 140)
+                                .frame(width: 160)
                         }
                         Spacer()
                     }
 
-                    VStack(alignment: .leading, spacing: 6) {
-                        HStack {
+                    VStack(alignment: .leading, spacing: 8) {
+                        HStack(spacing: 6) {
                             Text("Environment Variables")
-                                .font(.subheadline.weight(.medium))
-                            Spacer()
+                                .font(.system(size: 12, weight: .semibold))
                             Button {
                                 envRows.append(EnvRow())
                             } label: {
-                                Image(systemName: "plus")
+                                Image(systemName: "plus.circle.fill")
+                                    .font(.system(size: 14))
+                                    .foregroundStyle(HangarTheme.Status.running)
                             }
-                            .buttonStyle(.borderless)
+                            .buttonStyle(.plain)
+                            Spacer()
                         }
 
                         if envRows.isEmpty {
                             Text("None")
-                                .font(.caption)
-                                .foregroundStyle(.secondary)
+                                .font(.system(size: 11))
+                                .foregroundStyle(.tertiary)
                         } else {
                             ForEach($envRows) { $row in
-                                HStack {
+                                HStack(spacing: 8) {
                                     TextField("KEY", text: $row.key)
                                         .textFieldStyle(.roundedBorder)
                                         .font(.system(.body, design: .monospaced))
+                                        .frame(maxWidth: 180)
                                     TextField("value", text: $row.value)
                                         .textFieldStyle(.roundedBorder)
                                         .font(.system(.body, design: .monospaced))
                                     Button {
                                         envRows.removeAll { $0.id == row.id }
                                     } label: {
-                                        Image(systemName: "minus.circle")
+                                        Image(systemName: "minus.circle.fill")
+                                            .font(.system(size: 14))
+                                            .foregroundStyle(HangarTheme.Status.crashed)
                                     }
-                                    .buttonStyle(.borderless)
+                                    .buttonStyle(.plain)
                                 }
                             }
                         }
                     }
                 }
-                .padding(20)
+                .padding(.horizontal, 22)
+                .padding(.bottom, 16)
             }
 
-            Divider()
+            Divider().opacity(0.5)
 
             HStack {
                 Spacer()
                 Button("Cancel") { dismiss() }
+                    .buttonStyle(.glassNeutral)
                     .keyboardShortcut(.cancelAction)
-                Button("Save") { save() }
-                    .keyboardShortcut(.defaultAction)
-                    .buttonStyle(.borderedProminent)
-                    .disabled(!canSave)
+                Button {
+                    save()
+                } label: {
+                    Text("Save")
+                        .frame(minWidth: 64)
+                }
+                .buttonStyle(.primaryFilled)
+                .keyboardShortcut(.defaultAction)
+                .disabled(!canSave)
+                .opacity(canSave ? 1 : 0.6)
             }
-            .padding(16)
+            .padding(.horizontal, 18)
+            .padding(.vertical, 14)
         }
-        .frame(width: 560, height: 540)
+        .frame(width: 580, height: 560)
+        .background(AmbientBackground())
         .onAppear { loadFromMode() }
     }
 
     @ViewBuilder
     private func field<Content: View>(_ label: String, @ViewBuilder content: () -> Content) -> some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: 6) {
             Text(label)
-                .font(.subheadline.weight(.medium))
+                .font(.system(size: 12, weight: .medium))
             content()
         }
     }
