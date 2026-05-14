@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0FD971071BC4895F7355C1DA /* LogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D587153AD03AB6273097F731 /* LogView.swift */; };
+		19451DC380BED8D03CF12D48 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 884AB8F8E83F7862E260CDE7 /* SettingsView.swift */; };
 		24C7D8EB858095C1E0118935 /* ServerListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45D1242BB7A168EF4A44D503 /* ServerListView.swift */; };
 		26F9F596787A9EBF24AE3CD7 /* MenuBarContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5E912FA9B4317E99FF1FA3 /* MenuBarContent.swift */; };
 		41809678C7D6EE3D951923A3 /* LogBuffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5FA587A7C80C93F88268173 /* LogBuffer.swift */; };
@@ -15,6 +16,7 @@
 		6F47AA565266E0B31F9999EB /* HangarApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C18B8D45A99B2B02CFA15909 /* HangarApp.swift */; };
 		730C1208E1221C15014879CC /* MainWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 783F82631910F3AE6191B6B9 /* MainWindow.swift */; };
 		87544868DD28C6603DC683A0 /* ServerStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF11CDC1F19DBA46DEE89C5 /* ServerStore.swift */; };
+		9E47434B5A07B4D9810F78B3 /* HangarTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = AAA1EA0D7D19536D1F30AD6D /* HangarTheme.swift */; };
 		B169275D0D593ADE269877E4 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFEF035BB4A3BABFDC2FE677 /* Server.swift */; };
 		B5AB4CF4845701080AC0E2A3 /* ProcessManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D9AD7E1E6B495675BCCE898 /* ProcessManager.swift */; };
 		B65CE6B9CA4968CB40E572CB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6A842885D79290A8C65C068B /* Assets.xcassets */; };
@@ -29,9 +31,11 @@
 		72E83148E0E2A9D725226CEA /* RegisterServerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterServerSheet.swift; sourceTree = "<group>"; };
 		783F82631910F3AE6191B6B9 /* MainWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainWindow.swift; sourceTree = "<group>"; };
 		7A854321E1E7DADEE8FB7937 /* ServerRunner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerRunner.swift; sourceTree = "<group>"; };
+		884AB8F8E83F7862E260CDE7 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		9749758A26D1CED1BCAD67C2 /* Hangar.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Hangar.entitlements; sourceTree = "<group>"; };
 		A5D43A8C08B3925BDBB69A88 /* ServerDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerDetailView.swift; sourceTree = "<group>"; };
 		A5DC3005888DBC9B44B5697E /* Hangar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Hangar.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AAA1EA0D7D19536D1F30AD6D /* HangarTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HangarTheme.swift; sourceTree = "<group>"; };
 		AD5E912FA9B4317E99FF1FA3 /* MenuBarContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarContent.swift; sourceTree = "<group>"; };
 		BFEF035BB4A3BABFDC2FE677 /* Server.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
 		C18B8D45A99B2B02CFA15909 /* HangarApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HangarApp.swift; sourceTree = "<group>"; };
@@ -94,12 +98,14 @@
 		C518395A67EF784F4F1BF50B /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				AAA1EA0D7D19536D1F30AD6D /* HangarTheme.swift */,
 				D587153AD03AB6273097F731 /* LogView.swift */,
 				783F82631910F3AE6191B6B9 /* MainWindow.swift */,
 				AD5E912FA9B4317E99FF1FA3 /* MenuBarContent.swift */,
 				72E83148E0E2A9D725226CEA /* RegisterServerSheet.swift */,
 				A5D43A8C08B3925BDBB69A88 /* ServerDetailView.swift */,
 				45D1242BB7A168EF4A44D503 /* ServerListView.swift */,
+				884AB8F8E83F7862E260CDE7 /* SettingsView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -176,6 +182,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6F47AA565266E0B31F9999EB /* HangarApp.swift in Sources */,
+				9E47434B5A07B4D9810F78B3 /* HangarTheme.swift in Sources */,
 				41809678C7D6EE3D951923A3 /* LogBuffer.swift in Sources */,
 				0FD971071BC4895F7355C1DA /* LogView.swift in Sources */,
 				730C1208E1221C15014879CC /* MainWindow.swift in Sources */,
@@ -187,6 +194,7 @@
 				24C7D8EB858095C1E0118935 /* ServerListView.swift in Sources */,
 				C780C77C9E9480E175E72219 /* ServerRunner.swift in Sources */,
 				87544868DD28C6603DC683A0 /* ServerStore.swift in Sources */,
+				19451DC380BED8D03CF12D48 /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

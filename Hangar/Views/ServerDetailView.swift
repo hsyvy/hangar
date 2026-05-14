@@ -12,15 +12,15 @@ struct ServerDetailView: View {
     var body: some View {
         let runner = manager.runner(for: server)
 
-        VStack(alignment: .leading, spacing: 0) {
+        VStack(alignment: .leading, spacing: 14) {
             HeaderBar(server: server, runner: runner, onEdit: onEdit, onDelete: {
                 confirmingDelete = true
             })
-            Divider()
             MetadataBar(server: server, runner: runner)
-            Divider()
             LogView(buffer: runner.logs)
+                .glassPanel()
         }
+        .padding(16)
         .alert("Remove \(server.name.isEmpty ? "this server" : server.name)?",
                isPresented: $confirmingDelete) {
             Button("Cancel", role: .cancel) {}
@@ -41,15 +41,17 @@ private struct HeaderBar: View {
     let onDelete: () -> Void
 
     var body: some View {
-        HStack(spacing: 12) {
-            StatusDot(status: runner.status)
+        HStack(alignment: .center, spacing: 14) {
+            StatusDot(status: runner.status, size: 11)
+
             VStack(alignment: .leading, spacing: 2) {
                 Text(server.name.isEmpty ? "(unnamed)" : server.name)
-                    .font(.title2.weight(.semibold))
+                    .font(.system(size: 22, weight: .semibold))
                 Text(runner.status.label)
-                    .font(.caption)
+                    .font(.system(size: 12))
                     .foregroundStyle(.secondary)
             }
+
             Spacer()
 
             if runner.status.isActive {
@@ -58,16 +60,14 @@ private struct HeaderBar: View {
                 } label: {
                     Label("Stop", systemImage: "stop.fill")
                 }
-                .buttonStyle(.bordered)
-                .tint(.red)
+                .buttonStyle(.glassDestructive)
             } else {
                 Button {
                     runner.start()
                 } label: {
                     Label("Start", systemImage: "play.fill")
                 }
-                .buttonStyle(.borderedProminent)
-                .tint(.green)
+                .buttonStyle(.glassPrimary)
             }
 
             let openableURLs: [URL] = runner.detectedURLs.isEmpty
@@ -78,9 +78,14 @@ private struct HeaderBar: View {
                     Button {
                         NSWorkspace.shared.open(openableURLs[0])
                     } label: {
-                        Label("Open", systemImage: "arrow.up.right.square")
+                        HStack(spacing: 6) {
+                            Text(openableURLs[0].absoluteString)
+                                .lineLimit(1)
+                            Image(systemName: "arrow.up.right")
+                                .font(.system(size: 10, weight: .semibold))
+                        }
                     }
-                    .buttonStyle(.bordered)
+                    .buttonStyle(.glassNeutral)
                 } else {
                     Menu {
                         ForEach(openableURLs, id: \.self) { url in
@@ -94,7 +99,7 @@ private struct HeaderBar: View {
                         NSWorkspace.shared.open(openableURLs[0])
                     }
                     .menuStyle(.button)
-                    .buttonStyle(.bordered)
+                    .buttonStyle(.glassNeutral)
                     .fixedSize()
                 }
             }
@@ -108,17 +113,18 @@ private struct HeaderBar: View {
                 Divider()
                 Button("Remove…", role: .destructive, action: onDelete)
             } label: {
-                Image(systemName: "ellipsis.circle")
-                    .font(.system(size: 16))
-                    .contentShape(Rectangle())
+                Image(systemName: "ellipsis")
+                    .font(.system(size: 14, weight: .semibold))
+                    .frame(width: 30, height: 26)
             }
             .menuStyle(.button)
-            .buttonStyle(.borderless)
+            .buttonStyle(.glassNeutral)
             .menuIndicator(.hidden)
             .fixedSize()
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 12)
+        .padding(.horizontal, 18)
+        .padding(.vertical, 14)
+        .glassPanel()
     }
 }
 
@@ -128,25 +134,25 @@ private struct MetadataBar: View {
 
     var body: some View {
         let displayURL: URL? = runner.detectedURLs.first ?? server.url
-        HStack(spacing: 16) {
+        HStack(alignment: .top, spacing: 26) {
             MetaField(label: "Directory", value: server.directory)
             MetaField(label: "Command", value: server.command, mono: true)
             if let port = server.port {
-                MetaField(label: "Port", value: "\(port)")
+                MetaField(label: "Port", value: "\(port)", mono: true)
             }
-            if let pid = runner.pid {
-                MetaField(label: "PID", value: "\(pid)")
-            }
+            MetaField(label: "PID", value: runner.pid.map { "\($0)" } ?? "—", mono: true)
             if let url = displayURL {
                 MetaField(
                     label: runner.detectedURLs.isEmpty ? "URL" : "URL (detected)",
-                    value: url.absoluteString
+                    value: url.absoluteString,
+                    mono: true
                 )
             }
+            Spacer(minLength: 0)
         }
-        .padding(.horizontal, 16)
-        .padding(.vertical, 8)
-        .background(Color(nsColor: .controlBackgroundColor))
+        .padding(.horizontal, 18)
+        .padding(.vertical, 12)
+        .glassPanel()
     }
 }
 
@@ -156,13 +162,12 @@ private struct MetaField: View {
     var mono: Bool = false
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 2) {
-            Text(label)
-                .font(.caption2)
-                .foregroundStyle(.secondary)
-                .textCase(.uppercase)
+        VStack(alignment: .leading, spacing: 4) {
+            FieldLabel(text: label)
             Text(value)
-                .font(mono ? .system(.caption, design: .monospaced) : .caption)
+                .font(mono
+                      ? .system(size: 12, design: .monospaced)
+                      : .system(size: 12))
                 .lineLimit(1)
                 .truncationMode(.middle)
         }
