@@ -35,6 +35,8 @@ struct MainWindow: View {
                 store.update(updated)
             }
         }
+        .navigationTitle("Hangar")
+        .navigationSubtitle("local API Gateway")
     }
 }
 

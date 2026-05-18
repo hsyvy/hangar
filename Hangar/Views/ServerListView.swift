@@ -67,7 +67,7 @@ private struct ServerRow: View {
                 .lineLimit(1)
             Spacer(minLength: 0)
             if let port = server.port {
-                Text(":\(port)")
+                Text(verbatim: ":\(port)")
                     .font(.system(size: 11, design: .monospaced))
                     .foregroundStyle(.tertiary)
             }

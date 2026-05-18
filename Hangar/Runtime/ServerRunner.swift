@@ -72,7 +72,7 @@ final class ServerRunner {
 
         let proc = Process()
         proc.executableURL = URL(fileURLWithPath: "/bin/zsh")
-        proc.arguments = ["-lc", cmd]
+        proc.arguments = ["-ilc", cmd]
         proc.currentDirectoryURL = URL(fileURLWithPath: dir)
 
         var env = ProcessInfo.processInfo.environment

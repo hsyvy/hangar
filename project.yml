@@ -31,8 +31,8 @@ targets:
       properties:
         CFBundleName: Hangar
         CFBundleDisplayName: Hangar
-        CFBundleShortVersionString: "0.2.0"
-        CFBundleVersion: "2"
+        CFBundleShortVersionString: "0.2.1"
+        CFBundleVersion: "3"
         LSMinimumSystemVersion: "14.0"
         NSHighResolutionCapable: YES
         LSUIElement: NO
