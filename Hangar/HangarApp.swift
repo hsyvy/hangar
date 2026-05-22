@@ -1,11 +1,14 @@
 import SwiftUI
 import AppKit
+import Sparkle
 
 @MainActor
 final class AppServices {
     static let shared = AppServices()
     let store = ServerStore()
     let manager = ProcessManager()
+    let updaterController = SPUStandardUpdaterController(
+        startingUpdater: true, updaterDelegate: nil, userDriverDelegate: nil)
     private init() {}
 }
 
@@ -35,6 +38,9 @@ struct HangarApp: App {
         .windowResizability(.contentMinSize)
         .commands {
             CommandGroup(replacing: .newItem) {}
+            CommandGroup(after: .appInfo) {
+                CheckForUpdatesView(updater: AppServices.shared.updaterController.updater)
+            }
         }
 
         Settings {

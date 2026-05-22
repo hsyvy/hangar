@@ -47,7 +47,7 @@ private struct EmptyDetail: View {
         VStack(spacing: 18) {
             ZStack {
                 Circle()
-                    .fill(HangarTheme.Status.running.opacity(0.12))
+                    .fill(HangarTheme.Status.running.opacity(0.09))
                     .frame(width: 116, height: 116)
                     .blur(radius: 6)
                 Circle()

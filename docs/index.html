@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Hangar — run all your local dev servers from one window</title>
+<meta name="description" content="Hangar is a macOS menu bar app that starts, stops, and streams logs for every local dev server — then shuts each one down cleanly, so nothing's left holding a port." />
+<link rel="canonical" href="https://hsyvy.github.io/hangar/" />
+<link rel="icon" href="hangar-logo.png" />
+
+<!-- Open Graph / Twitter — controls how the link unfurls when shared.
+     TODO: replace og-image with a 1200x630 image (a screenshot works great). -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://hsyvy.github.io/hangar/" />
+<meta property="og:title" content="Hangar — run all your local dev servers from one window" />
+<meta property="og:description" content="A macOS menu bar app that starts, stops, and streams logs for every local dev server — and shuts each one down cleanly." />
+<meta property="og:image" content="https://hsyvy.github.io/hangar/hangar-logo.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Hangar — run all your local dev servers from one window" />
+<meta name="twitter:description" content="A macOS menu bar app that starts, stops, and streams logs for every local dev server — and shuts each one down cleanly." />
+<meta name="twitter:image" content="https://hsyvy.github.io/hangar/hangar-logo.png" />
+
+<style>
+  :root{
+    --bg:#f4f1ea;
+    --panel:rgba(255,255,255,.72);
+    --ink:#1c1c1e;
+    --ink-2:#5f5e5a;
+    --ink-3:#928f88;
+    --line:rgba(0,0,0,.07);
+    --green:#2ed173;
+    --green-ink:#0c9b50;
+    --amber:#f3a72e;
+    --red:#ff5c5c;
+    --radius:16px;
+    --shadow:0 1px 2px rgba(0,0,0,.04), 0 14px 38px rgba(40,30,10,.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);
+    color:var(--ink);
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  /* soft pastel glow behind the hero */
+  body::before{
+    content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:
+      radial-gradient(60vw 40vh at 70% -5%, rgba(46,209,115,.16), transparent 70%),
+      radial-gradient(50vw 38vh at 12% 8%, rgba(120,150,255,.10), transparent 70%);
+  }
+  a{color:inherit}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,"Courier New",monospace}
+
+  /* ---- nav ---- */
+  nav{
+    position:sticky;top:0;z-index:50;
+    backdrop-filter:saturate(1.4) blur(14px);
+    -webkit-backdrop-filter:saturate(1.4) blur(14px);
+    background:rgba(244,241,234,.78);
+    border-bottom:1px solid var(--line);
+  }
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:62px}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:600;font-size:17px}
+  .brand img{width:30px;height:30px;border-radius:7px}
+  .nav-right{display:flex;align-items:center;gap:20px}
+  .nav-right a.ghost{font-size:14px;color:var(--ink-2);text-decoration:none}
+  .nav-right a.ghost:hover{color:var(--ink)}
+
+  /* ---- buttons ---- */
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:14px;font-weight:600;text-decoration:none;
+    padding:10px 18px;border-radius:999px;border:1px solid transparent;
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .btn:active{transform:scale(.98)}
+  .btn-primary{
+    background:var(--green-ink);color:#fff;
+    box-shadow:0 6px 18px rgba(12,155,80,.32);
+  }
+  .btn-primary:hover{box-shadow:0 8px 24px rgba(12,155,80,.42)}
+  .btn-ghost{
+    background:rgba(255,255,255,.7);color:var(--ink);
+    border-color:var(--line);
+  }
+  .btn-ghost:hover{background:#fff}
+  .btn-lg{padding:14px 26px;font-size:15px}
+
+  /* ---- hero ---- */
+  header{padding:72px 0 36px;text-align:center}
+  .hero-logo{
+    width:88px;height:88px;display:block;margin:0 auto 20px;border-radius:20px;
+    filter:drop-shadow(0 10px 24px rgba(40,30,10,.18));
+  }
+  .badge{
+    display:inline-flex;align-items:center;gap:7px;
+    font-size:12.5px;font-weight:600;color:var(--green-ink);
+    background:rgba(46,209,115,.12);border:1px solid rgba(46,209,115,.28);
+    padding:5px 12px;border-radius:999px;margin-bottom:22px;
+  }
+  .badge .dot{width:7px;height:7px;border-radius:50%;background:var(--green);
+    box-shadow:0 0 8px rgba(46,209,115,.8)}
+  h1{
+    font-size:54px;line-height:1.07;letter-spacing:-.022em;font-weight:680;
+    max-width:14ch;margin:0 auto;
+  }
+  .sub{
+    margin:22px auto 0;max-width:60ch;font-size:18px;color:var(--ink-2);
+  }
+  .cta{display:flex;gap:13px;justify-content:center;flex-wrap:wrap;margin-top:30px}
+  .meta{margin-top:18px;font-size:13px;color:var(--ink-3)}
+  .meta b{color:var(--ink-2);font-weight:600}
+
+  /* ---- app mockup ---- */
+  .mock-shell{margin:54px auto 0;max-width:880px}
+  .mock{
+    border-radius:14px;overflow:hidden;
+    background:rgba(255,255,255,.82);
+    border:1px solid rgba(0,0,0,.10);
+    box-shadow:var(--shadow);
+    backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  }
+  .titlebar{
+    display:flex;align-items:center;gap:8px;padding:11px 14px;
+    background:rgba(250,249,246,.9);border-bottom:1px solid var(--line);
+  }
+  .tl{width:12px;height:12px;border-radius:50%}
+  .tl.r{background:#ff5f57}.tl.y{background:#febc2e}.tl.g{background:#28c840}
+  .titlebar .t{
+    flex:1;text-align:center;font-size:12.5px;font-weight:600;color:var(--ink-2);
+    margin-right:44px;
+  }
+  .mock-body{display:flex;min-height:340px}
+  .sidebar{
+    width:212px;flex:none;border-right:1px solid var(--line);
+    padding:12px 10px;background:rgba(255,255,255,.4);
+  }
+  .side-h{font-size:10px;font-weight:700;letter-spacing:.09em;
+    color:var(--ink-3);text-transform:uppercase;padding:4px 8px 9px}
+  .srow{
+    display:flex;align-items:center;gap:9px;padding:9px 9px;border-radius:9px;
+    font-size:13px;
+  }
+  .srow.sel{background:rgba(46,209,115,.12);border:1px solid rgba(46,209,115,.26)}
+  .srow .nm{font-weight:550;flex:1}
+  .srow .pt{font-size:11px;color:var(--ink-3)}
+  .sdot{width:8px;height:8px;border-radius:50%;flex:none}
+  .sdot.run{background:var(--green);box-shadow:0 0 7px rgba(46,209,115,.85)}
+  .sdot.stop{background:#b6b4ae}
+
+  .detail{flex:1;padding:15px;display:flex;flex-direction:column;gap:11px;min-width:0}
+  .card{
+    background:rgba(255,255,255,.7);border:1px solid var(--line);
+    border-radius:12px;
+  }
+  .d-head{display:flex;align-items:center;gap:11px;padding:13px 15px}
+  .d-head .big{width:11px;height:11px;border-radius:50%;background:var(--green);
+    box-shadow:0 0 9px rgba(46,209,115,.9)}
+  .d-head .ti{font-size:18px;font-weight:650}
+  .d-head .st{font-size:11.5px;color:var(--ink-2)}
+  .d-head .spacer{flex:1}
+  .pill{
+    font-size:11.5px;font-weight:600;padding:5px 11px;border-radius:999px;
+    border:1px solid;white-space:nowrap;
+  }
+  .pill.stop{color:var(--red);border-color:rgba(255,92,92,.45);
+    background:rgba(255,92,92,.10)}
+  .pill.url{color:var(--ink);border-color:var(--line);
+    background:rgba(255,255,255,.8)}
+  .meta-row{display:flex;gap:22px;padding:11px 15px;flex-wrap:wrap}
+  .mf .k{font-size:9.5px;font-weight:700;letter-spacing:.07em;
+    color:var(--ink-3);text-transform:uppercase}
+  .mf .v{font-size:12px;margin-top:2px}
+  .console{
+    flex:1;background:#1a1a1d;border-radius:12px;padding:13px 15px;
+    font-size:11.5px;line-height:1.7;overflow:hidden;
+  }
+  .console .ln{white-space:pre;color:#cdccc6}
+  .console .sys{color:#7d8a82}
+  .console .ok{color:#5fd99a}
+  .console .dim{color:#86857f}
+
+  /* ---- sections ---- */
+  section{padding:68px 0}
+  .sec-h{text-align:center;max-width:34ch;margin:0 auto 44px}
+  .sec-h h2{font-size:34px;letter-spacing:-.02em;font-weight:660;line-height:1.15}
+  .sec-h p{margin-top:12px;color:var(--ink-2);font-size:16px}
+
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .feat{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:22px;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  }
+  .feat .ic{
+    width:38px;height:38px;border-radius:10px;display:flex;
+    align-items:center;justify-content:center;margin-bottom:14px;
+    background:rgba(46,209,115,.13);color:var(--green-ink);
+  }
+  .feat h3{font-size:16.5px;font-weight:620;letter-spacing:-.01em}
+  .feat p{margin-top:7px;font-size:14px;color:var(--ink-2)}
+
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;counter-reset:s}
+  .step{
+    background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:24px 22px;position:relative;
+  }
+  .step::before{
+    counter-increment:s;content:counter(s);
+    display:flex;align-items:center;justify-content:center;
+    width:30px;height:30px;border-radius:50%;
+    background:var(--green-ink);color:#fff;font-weight:700;font-size:14px;
+    margin-bottom:14px;
+  }
+  .step h3{font-size:16.5px;font-weight:620}
+  .step p{margin-top:7px;font-size:14px;color:var(--ink-2)}
+  .step code{
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;
+    background:rgba(0,0,0,.05);padding:1px 6px;border-radius:5px;
+  }
+
+  /* ---- final cta ---- */
+  .final{
+    text-align:center;background:var(--panel);border:1px solid var(--line);
+    border-radius:24px;padding:54px 28px;
+    backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  }
+  .final h2{font-size:32px;letter-spacing:-.02em;font-weight:660}
+  .final p{margin-top:10px;color:var(--ink-2)}
+  .final .cta{margin-top:26px}
+
+  footer{padding:40px 0 56px;text-align:center;color:var(--ink-3);font-size:13px}
+  footer a{color:var(--ink-2);text-decoration:none;margin:0 10px}
+  footer a:hover{color:var(--ink)}
+  footer .fl{margin-bottom:10px}
+
+  /* ---- responsive ---- */
+  @media (max-width:760px){
+    h1{font-size:38px}
+    .sub{font-size:16px}
+    header{padding:54px 0 24px}
+    section{padding:50px 0}
+    .sec-h h2,.final h2{font-size:27px}
+    .grid,.steps{grid-template-columns:1fr}
+    .mock-body{flex-direction:column}
+    .sidebar{width:100%;border-right:none;border-bottom:1px solid var(--line);
+      display:flex;gap:6px;overflow-x:auto}
+    .side-h{display:none}
+    .srow{flex:none}
+    .nav-right a.ghost{display:none}
+    .console{min-height:150px}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand"><img src="hangar-logo.png" alt="" /> Hangar</div>
+    <div class="nav-right">
+      <a class="ghost" href="#features">Features</a>
+      <a class="ghost" href="https://github.com/hsyvy/hangar">GitHub</a>
+      <!-- Direct DMG download. Bump this URL when you cut a new release. -->
+      <a class="btn btn-primary" href="https://github.com/hsyvy/hangar/releases/download/v0.2.1/Hangar-0.2.1.dmg">Download</a>
+    </div>
+  </div>
+</nav>
+
+<header>
+  <div class="wrap">
+    <img class="hero-logo" src="hangar-logo.png" alt="Hangar app icon" />
+    <div class="badge"><span class="dot"></span> Free &amp; open source</div>
+    <h1>Run all your local servers from one window.</h1>
+    <p class="sub">
+      Hangar is a macOS menu bar app that starts, stops, and streams logs for
+      every dev server on your machine — then shuts each one down cleanly, so
+      nothing is left holding port 3000.
+    </p>
+    <div class="cta">
+      <a class="btn btn-primary btn-lg" href="https://github.com/hsyvy/hangar/releases/download/v0.2.1/Hangar-0.2.1.dmg">
+        Download for macOS
+      </a>
+      <a class="btn btn-ghost btn-lg" href="https://github.com/hsyvy/hangar">View on GitHub</a>
+    </div>
+    <p class="meta"><b>macOS 14+</b> &nbsp;·&nbsp; Signed &amp; notarized by Apple &nbsp;·&nbsp; ~2&nbsp;MB</p>
+
+    <!-- Mockup of the app. Swap this block for a real screenshot or an
+         autoplaying muted <video> of the demo recording once you have it. -->
+    <div class="mock-shell">
+      <div class="mock">
+        <div class="titlebar">
+          <span class="tl r"></span><span class="tl y"></span><span class="tl g"></span>
+          <span class="t">Hangar</span>
+        </div>
+        <div class="mock-body">
+          <div class="sidebar">
+            <div class="side-h">Servers</div>
+            <div class="srow sel"><span class="sdot run"></span><span class="nm">web</span><span class="pt">:3000</span></div>
+            <div class="srow"><span class="sdot run"></span><span class="nm">api</span><span class="pt">:8787</span></div>
+            <div class="srow"><span class="sdot run"></span><span class="nm">docs</span><span class="pt">:4000</span></div>
+            <div class="srow"><span class="sdot stop"></span><span class="nm">worker</span><span class="pt">idle</span></div>
+          </div>
+          <div class="detail">
+            <div class="card d-head">
+              <span class="big"></span>
+              <div>
+                <div class="ti">web</div>
+                <div class="st">Running</div>
+              </div>
+              <span class="spacer"></span>
+              <span class="pill url mono">localhost:3000 ↗</span>
+              <span class="pill stop">Stop</span>
+            </div>
+            <div class="card meta-row">
+              <div class="mf"><div class="k">Directory</div><div class="v mono">~/code/web</div></div>
+              <div class="mf"><div class="k">Command</div><div class="v mono">npm run dev</div></div>
+              <div class="mf"><div class="k">Port</div><div class="v mono">3000</div></div>
+              <div class="mf"><div class="k">PID</div><div class="v mono">48213</div></div>
+            </div>
+            <div class="console mono">
+              <div class="ln sys">[Hangar]  Started (pid 48213): npm run dev</div>
+              <div class="ln dim">
+  VITE v5.2.0  ready in 412 ms</div>
+              <div class="ln ok">  ➜  Local:   http://localhost:3000/</div>
+              <div class="ln dim">  ➜  Network: use --host to expose</div>
+              <div class="ln sys">[Hangar]  URL detected → localhost:3000</div>
+              <div class="ln dim">  12:04:31  hmr update /src/App.tsx</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="features">
+  <div class="wrap">
+    <div class="sec-h">
+      <h2>Built for the way you actually run servers.</h2>
+      <p>No daemon, no config files, no YAML. Register a command and go.</p>
+    </div>
+    <div class="grid">
+
+      <div class="feat">
+        <div class="ic">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+        </div>
+        <h3>One home for every server</h3>
+        <p>Register a name, directory, command, and env vars once. Start and stop each server with a single click.</p>
+      </div>
+
+      <div class="feat">
+        <div class="ic">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="13" y2="17"/></svg>
+        </div>
+        <h3>Live logs, per server</h3>
+        <p>stdout and stderr stream straight into the app. No terminal tabs to hunt through when something breaks.</p>
+      </div>
+
+      <div class="feat">
+        <div class="ic">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v9"/><path d="M6.3 7A8 8 0 1 0 18 7"/></svg>
+        </div>
+        <h3>Clean shutdown</h3>
+        <p>Stopping a server kills its whole process tree. No orphaned <span class="mono">node</span> or <span class="mono">vite</span> processes squatting on your ports.</p>
+      </div>
+
+      <div class="feat">
+        <div class="ic">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg>
+        </div>
+        <h3>URL auto-detect</h3>
+        <p>Hangar spots <span class="mono">localhost:PORT</span> in your log output and gives you a button to open it in the browser.</p>
+      </div>
+
+      <div class="feat">
+        <div class="ic">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M7 9l3 3-3 3"/><line x1="13" y1="15" x2="17" y2="15"/></svg>
+        </div>
+        <h3>Your real shell</h3>
+        <p>Commands run through your login shell, so <span class="mono">nvm</span>, <span class="mono">pyenv</span>, and your <span class="mono">PATH</span> resolve exactly like in Terminal.</p>
+      </div>
+
+      <div class="feat">
+        <div class="ic">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2.5"/><line x1="3" y1="9" x2="21" y2="9"/><circle cx="6.5" cy="6.5" r=".6" fill="currentColor"/></svg>
+        </div>
+        <h3>Right in the menu bar</h3>
+        <p>Glance at every server's status and toggle them from the menu bar — no need to bring the main window forward.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-h">
+      <h2>Three steps.</h2>
+      <p>From a fresh install to a running server in under a minute.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <h3>Register</h3>
+        <p>Point Hangar at a folder and give it the command you'd normally type — <code>npm run dev</code>, <code>python app.py</code>, <code>cargo run</code>.</p>
+      </div>
+      <div class="step">
+        <h3>Run</h3>
+        <p>Hit start. Logs stream in live, and Hangar surfaces the localhost URL the moment your server prints it.</p>
+      </div>
+      <div class="step">
+        <h3>Quit clean</h3>
+        <p>Stop one server, or quit Hangar entirely — every process it launched is terminated with it. No leftovers.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="final">
+      <h2>Get Hangar</h2>
+      <p>Free, open source, and notarized. Runs on macOS 14 Sonoma or later.</p>
+      <div class="cta">
+        <a class="btn btn-primary btn-lg" href="https://github.com/hsyvy/hangar/releases/download/v0.2.1/Hangar-0.2.1.dmg">
+          Download for macOS
+        </a>
+        <a class="btn btn-ghost btn-lg" href="https://github.com/hsyvy/hangar">View source</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="fl">
+      <a href="https://github.com/hsyvy/hangar">GitHub</a>
+      <a href="https://github.com/hsyvy/hangar/releases">Releases</a>
+      <a href="https://github.com/hsyvy/hangar/blob/main/LICENSE">License</a>
+    </div>
+    Hangar is open source under the MIT license.
+  </div>
+</footer>
+
+</body>
+</html>
