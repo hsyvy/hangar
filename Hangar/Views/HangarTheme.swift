@@ -7,7 +7,7 @@ enum HangarTheme {
     static let pillRadius: CGFloat = 999
 
     enum Status {
-        static let running   = Color(red: 0.18, green: 0.82, blue: 0.45)
+        static let running   = Color(red: 0.29, green: 0.67, blue: 0.44)
         static let stopped   = Color(red: 0.55, green: 0.56, blue: 0.60)
         static let starting  = Color(red: 1.00, green: 0.78, blue: 0.20)
         static let crashed   = Color(red: 1.00, green: 0.36, blue: 0.36)
@@ -194,8 +194,8 @@ struct StatusDot: View {
         let color = status.tint
         ZStack {
             Circle()
-                .fill(color.opacity(status == .running ? 0.28 : 0))
-                .frame(width: size * 2.2, height: size * 2.2)
+                .fill(color.opacity(status == .running ? 0.11 : 0))
+                .frame(width: size * 2.0, height: size * 2.0)
                 .blur(radius: 3)
 
             Circle()
@@ -205,7 +205,7 @@ struct StatusDot: View {
                     Circle()
                         .strokeBorder(Color.white.opacity(0.55), lineWidth: 0.5)
                 }
-                .shadow(color: color.opacity(0.6), radius: status == .running ? 4 : 0)
+                .shadow(color: color.opacity(0.22), radius: status == .running ? 3 : 0)
         }
         .frame(width: size, height: size)
     }
