@@ -71,7 +71,7 @@ private struct HeaderBar: View {
             }
 
             let openableURLs: [URL] = runner.detectedURLs.isEmpty
-                ? (server.url.map { [$0] } ?? [])
+                ? (runner.resolvedURL.map { [$0] } ?? [])
                 : runner.detectedURLs
             if !openableURLs.isEmpty, runner.status == .running {
                 if openableURLs.count == 1 {
@@ -133,17 +133,23 @@ private struct MetadataBar: View {
     let runner: ServerRunner
 
     var body: some View {
-        let displayURL: URL? = runner.detectedURLs.first ?? server.url
+        let displayURL: URL? = runner.resolvedURL
+        let resolvedPort: Int? = server.port ?? runner.detectedPort
+        let urlIsDetected = !runner.detectedURLs.isEmpty || server.port == nil
         HStack(alignment: .top, spacing: 26) {
             MetaField(label: "Directory", value: server.directory)
             MetaField(label: "Command", value: server.command, mono: true)
-            if let port = server.port {
-                MetaField(label: "Port", value: "\(port)", mono: true)
+            if let resolvedPort {
+                MetaField(
+                    label: server.port == nil ? "Port (detected)" : "Port",
+                    value: "\(resolvedPort)",
+                    mono: true
+                )
             }
             MetaField(label: "PID", value: runner.pid.map { "\($0)" } ?? "—", mono: true)
             if let url = displayURL {
                 MetaField(
-                    label: runner.detectedURLs.isEmpty ? "URL" : "URL (detected)",
+                    label: urlIsDetected ? "URL (detected)" : "URL",
                     value: url.absoluteString,
                     mono: true
                 )

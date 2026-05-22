@@ -148,7 +148,7 @@ private struct MenuBarServerRow: View {
             Spacer(minLength: 0)
 
             HStack(spacing: 4) {
-                let openURL = runner.detectedURLs.first ?? server.url
+                let openURL = runner.resolvedURL
                 if runner.status == .running, let url = openURL {
                     iconButton(systemName: "arrow.up.right.square", tint: .secondary) {
                         NSWorkspace.shared.open(url)
@@ -178,7 +178,7 @@ private struct MenuBarServerRow: View {
     }
 
     private func detailLine(runner: ServerRunner) -> String {
-        if let port = server.port {
+        if let port = server.port ?? runner.detectedPort {
             return "\(runner.status.label) · :\(port)"
         }
         return runner.status.label
