@@ -26,5 +26,9 @@
 	<false/>
 	<key>NSHighResolutionCapable</key>
 	<true/>
+	<key>SUFeedURL</key>
+	<string>https://github.com/hsyvy/hangar/releases/latest/download/appcast.xml</string>
+	<key>SUPublicEDKey</key>
+	<string>Vu5w4Tk0TcmU22nETzZkbXpxCsZV3Lh5vS0HL4AULqo=</string>
 </dict>
 </plist>

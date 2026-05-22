@@ -23,6 +23,8 @@ TEAM_ID="${TEAM_ID:-AR8U26HF34}"
 SCHEME="Hangar"
 PROJECT="Hangar.xcodeproj"
 PRODUCT_NAME="Hangar"
+SPARKLE_VERSION="2.9.2"
+REPO_URL="https://github.com/hsyvy/hangar"
 
 SKIP_NOTARIZE=0
 for arg in "$@"; do
@@ -49,6 +51,24 @@ fi
 DMG_PATH="$DIST_DIR/${PRODUCT_NAME}-${VERSION}.dmg"
 
 step() { printf "\n\033[1;34m==> %s\033[0m\n" "$*"; }
+
+# Locate a Sparkle CLI tool (generate_appcast, sign_update, …). Checks the
+# local tools cache and the resolved SwiftPM artifacts, then downloads the
+# official Sparkle tools as a fallback.
+find_sparkle_tool() {
+  local name="$1" found dir
+  for dir in "$BUILD_DIR/sparkle-tools" "$BUILD_DIR/SourcePackages/artifacts"; do
+    found="$(find "$dir" -name "$name" -type f -perm -u+x 2>/dev/null | head -1)"
+    [[ -n "$found" ]] && { echo "$found"; return; }
+  done
+  local cache="$BUILD_DIR/sparkle-tools"
+  mkdir -p "$cache"
+  curl -fsSL "https://github.com/sparkle-project/Sparkle/releases/download/${SPARKLE_VERSION}/Sparkle-${SPARKLE_VERSION}.tar.xz" \
+    | tar -xJ -C "$cache"
+  found="$(find "$cache" -name "$name" -type f -perm -u+x 2>/dev/null | head -1)"
+  [[ -n "$found" ]] || { echo "Sparkle tool not found: $name" >&2; exit 1; }
+  echo "$found"
+}
 
 # ---- Prereq checks ----------------------------------------------------------
 step "Checking prerequisites"
@@ -104,7 +124,8 @@ mkdir -p "$DIST_DIR"
 rm -f "$DMG_PATH"
 
 STAGING="$(mktemp -d -t hangar-dmg)"
-trap 'rm -rf "$STAGING"' EXIT
+APPCAST_STAGING=""
+trap 'rm -rf "$STAGING" "$APPCAST_STAGING"' EXIT
 cp -R "$APP_PATH" "$STAGING/"
 ln -s /Applications "$STAGING/Applications"
 
@@ -131,6 +152,22 @@ if (( ! SKIP_NOTARIZE )); then
   spctl -a -t open --context context:primary-signature -v "$DMG_PATH"
 fi
 
+# ---- Generate Sparkle appcast ----------------------------------------------
+step "Generating Sparkle appcast"
+GENERATE_APPCAST="$(find_sparkle_tool generate_appcast)"
+APPCAST_STAGING="$(mktemp -d -t hangar-appcast)"
+cp "$DMG_PATH" "$APPCAST_STAGING/"
+"$GENERATE_APPCAST" "$APPCAST_STAGING" \
+  --download-url-prefix "$REPO_URL/releases/download/v${VERSION}/" \
+  --link "$REPO_URL"
+cp "$APPCAST_STAGING/appcast.xml" "$DIST_DIR/appcast.xml"
+echo "appcast: $DIST_DIR/appcast.xml"
+
 # ---- Done -------------------------------------------------------------------
 SIZE="$(du -h "$DMG_PATH" | awk '{print $1}')"
-printf "\n\033[1;32m✓ Release ready: %s (%s)\033[0m\n" "$DMG_PATH" "$SIZE"
+printf "\n\033[1;32m✓ Release %s ready\033[0m\n" "$VERSION"
+printf "    %s (%s)\n" "$DMG_PATH" "$SIZE"
+printf "    %s\n" "$DIST_DIR/appcast.xml"
+printf "\nPublish — upload BOTH files to a GitHub release tagged v%s:\n" "$VERSION"
+printf "    gh release create v%s \"%s\" \"%s\" --title \"v%s\" --generate-notes\n" \
+  "$VERSION" "$DMG_PATH" "$DIST_DIR/appcast.xml" "$VERSION"

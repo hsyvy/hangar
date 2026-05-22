@@ -20,12 +20,19 @@ settings:
       ENABLE_HARDENED_RUNTIME: YES
       OTHER_CODE_SIGN_FLAGS: "--timestamp --options=runtime"
 
+packages:
+  Sparkle:
+    url: https://github.com/sparkle-project/Sparkle
+    exactVersion: "2.9.2"
+
 targets:
   Hangar:
     type: application
     platform: macOS
     sources:
       - path: Hangar
+    dependencies:
+      - package: Sparkle
     info:
       path: Hangar/Info.plist
       properties:
@@ -36,6 +43,8 @@ targets:
         LSMinimumSystemVersion: "14.0"
         NSHighResolutionCapable: YES
         LSUIElement: NO
+        SUFeedURL: "https://github.com/hsyvy/hangar/releases/latest/download/appcast.xml"
+        SUPublicEDKey: "Vu5w4Tk0TcmU22nETzZkbXpxCsZV3Lh5vS0HL4AULqo="
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.h.hangar

@@ -87,6 +87,10 @@ struct SettingsView: View {
                                 .font(.system(size: 12, design: .monospaced))
                                 .foregroundStyle(.tertiary)
                         }
+                        CheckForUpdatesView(updater: AppServices.shared.updaterController.updater)
+                            .buttonStyle(.bordered)
+                            .controlSize(.small)
+                            .padding(.top, 2)
                     }
 
                     Spacer(minLength: 0)
