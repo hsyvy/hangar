@@ -101,6 +101,29 @@ xcodebuild \
 
 [[ -d "$APP_PATH" ]] || { echo "build did not produce $APP_PATH" >&2; exit 1; }
 
+# ---- Re-sign bundled Sparkle helpers ---------------------------------------
+# Xcode signs Sparkle.framework's main binary with the Developer ID but leaves
+# its nested helpers — Updater.app, Autoupdate, the XPC services — carrying
+# Sparkle's own signature, which notarization rejects. Re-sign them with a
+# secure timestamp and the hardened runtime, then re-seal the framework and
+# the app, working inner to outer.
+step "Re-signing bundled Sparkle helpers"
+SPARKLE_FW="$APP_PATH/Contents/Frameworks/Sparkle.framework"
+if [[ -d "$SPARKLE_FW" ]]; then
+  for nested in \
+    "Versions/Current/Updater.app" \
+    "Versions/Current/XPCServices/Downloader.xpc" \
+    "Versions/Current/XPCServices/Installer.xpc" \
+    "Versions/Current/Autoupdate"
+  do
+    codesign -f -o runtime --timestamp -s "$SIGN_IDENTITY" "$SPARKLE_FW/$nested"
+  done
+  codesign -f -o runtime --timestamp -s "$SIGN_IDENTITY" "$SPARKLE_FW"
+  codesign -f -o runtime --timestamp \
+    --entitlements "$ROOT/Hangar/Hangar.entitlements" \
+    -s "$SIGN_IDENTITY" "$APP_PATH"
+fi
+
 step "Verifying app signature"
 codesign --verify --deep --strict --verbose=2 "$APP_PATH"
 
