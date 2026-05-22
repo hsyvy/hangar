@@ -62,3 +62,12 @@ fastlane/test_output
 .idea/
 *.swp
 *~
+
+# Claude Code local settings
+.claude/settings.local.json
+
+# Launch materials (local only — not part of the shipped product)
+launch/
+
+# Local preview server for the docs/ landing page (not part of the shipped product)
+preview/
