@@ -143,6 +143,12 @@ fi
 
 # ---- Build DMG --------------------------------------------------------------
 step "Building DMG"
+# A stale /Volumes/Hangar (e.g. a previously-built DMG the user mounted)
+# claims the volume name we want; hdiutil create then fails. Detach it first.
+if [[ -d "/Volumes/$PRODUCT_NAME" ]]; then
+  hdiutil detach "/Volumes/$PRODUCT_NAME" >/dev/null 2>&1 \
+    || hdiutil detach -force "/Volumes/$PRODUCT_NAME" >/dev/null
+fi
 mkdir -p "$DIST_DIR"
 rm -f "$DMG_PATH"
 
